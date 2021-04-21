@@ -33,6 +33,11 @@ local function MainFrame()
 	
 	window.CurrentlyOpen = true
 
+--	If we don't remember the last category, set to default:
+	if window.CurrentCategory == nil then
+		window.CurrentCategory = PHX.DEFAULT_CATEGORY
+	end
+
 	window.frame = vgui.Create("DFrame")
 	window.frame:SetSize(490,600)
 	window.frame:SetTitle( PHX:FTranslate("TM_WINDOW_TITLE") )
@@ -64,10 +69,10 @@ local function MainFrame()
 	window.comb = vgui.Create("DComboBox", window.frame)
 	window.comb:Dock(TOP)
 	window.comb:SetSize(0, 20)
-	window.comb:SetValue( PHX.DEFAULT_CATEGORY )
+	window.comb:SetValue( window.CurrentCategory )
 	
 	-- Let's Initialize the window.list.
-	local defaultList = PHX.TAUNTS[PHX.DEFAULT_CATEGORY]
+	local defaultList = PHX.TAUNTS[window.CurrentCategory]
 	
 	-- add default list
 	for name,_ in pairs( defaultList[LocalPlayer():Team()] ) do window.list:AddLine( name ) end
@@ -128,7 +133,7 @@ local function MainFrame()
 		self:SortAndStyle(window.list)
 	end
 	
-	window.CurrentCategory = PHX.DEFAULT_CATEGORY
+--	window.CurrentCategory = window.CurrentCategory
 	window.comb:SortAndStyle(window.list)
 	
 	local btnpanel = vgui.Create("DPanel", window.frame)
